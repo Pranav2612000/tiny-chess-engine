@@ -12,3 +12,10 @@ func IsUpper(s string) bool {
     }
     return true
 }
+
+func flipByteCase(b byte) byte {
+    if IsUpper(string(b)) {
+        return byte(unicode.ToLower(rune(b)));
+    }
+    return byte(unicode.ToUpper(rune(b)));
+}
