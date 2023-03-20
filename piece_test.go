@@ -35,3 +35,15 @@ func TestValue(t *testing.T) {
         t.Error(`Piece of type White should have value`, pawn.Value());
     }
 }
+
+func TestOurs(t *testing.T) {
+    ourPiece := Piece{color: 'W', variant: 'P'}
+    if ourPiece.Ours() != true {
+        t.Error(`Piece with capital variant should be our piece`);
+    }
+
+    theirPiece := Piece{color: 'B', variant: 'k'}
+    if theirPiece.Ours() != false {
+        t.Error(`Piece with lowercase variant should not be our piece`);
+    }
+}

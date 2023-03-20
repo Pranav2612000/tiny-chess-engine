@@ -8,6 +8,7 @@ package main
 // Q - Queen 929
 // K - King 999999
 // Piece.color is stored as 'W' for White and 'B' for Black
+// Opponent pieces are stored with the same symbols, but in lowercase
 // Point values borrowed from https://zserge.com/posts/carnatus/
 type Piece struct {
     color byte 
@@ -20,7 +21,10 @@ func (p Piece) Value() int {
     return pieceValueMap[p.variant];
 }
 func (p Piece) Ours() bool {
-    return true;
+    if IsUpper(string(p.variant)) {
+        return true;
+    }
+    return false;
 }
 func (p Piece) Flip() Piece {
 }
