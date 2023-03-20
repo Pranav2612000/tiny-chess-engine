@@ -26,7 +26,9 @@ func (p Piece) Ours() bool {
     }
     return false;
 }
-func (p Piece) Flip() Piece {
+
+func (p *Piece) Flip() {
+    p.variant = flipByteCase(p.variant)
 }
 
 type Board [120]Piece

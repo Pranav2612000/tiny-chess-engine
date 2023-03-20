@@ -47,3 +47,11 @@ func TestOurs(t *testing.T) {
         t.Error(`Piece with lowercase variant should not be our piece`);
     }
 }
+
+func TestFlip(t *testing.T) {
+    ourPiece := Piece{color: 'W', variant: 'P'}
+    ourPiece.Flip();
+    if rune(ourPiece.variant) != 'p' {
+        t.Error(`Failed to flip piece`);
+    }
+}
