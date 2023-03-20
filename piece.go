@@ -30,7 +30,3 @@ func (p Piece) Ours() bool {
 func (p *Piece) Flip() {
     p.variant = flipByteCase(p.variant)
 }
-
-type Board [120]Piece
-func (b Board) Flip() Board {
-}

@@ -1,10 +1,9 @@
 package main
 
-type Board [120]Piece
-func (b Board) Flip() Board {
-}
+import (
+    "fmt"
+)
 
-type Square int
-func (s Square) Flip() Square {
+func main() {
+    fmt.Println("Starting Chess Engine...")
 }
-
