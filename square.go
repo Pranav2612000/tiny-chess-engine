@@ -1,6 +1,14 @@
 package main
 
-type Square int
+type Square struct {
+    position int
+    piece *Piece
+    isPlayable bool
+}
+
 func (s *Square) Flip() {
-    *s = Square(119 - *s);
+    s.position = 119 - s.position;
+    if s.piece != nil {
+        s.piece.Flip()
+    }
 }
