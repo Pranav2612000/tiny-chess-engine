@@ -7,6 +7,8 @@ package main
 // R - Rook 479
 // Q - Queen 929
 // K - King 999999
+// . - Empty Square 0
+// - - Empty Square 0
 // Piece.color is stored as 'W' for White and 'B' for Black
 // Opponent pieces are stored with the same symbols, but in lowercase
 // Point values borrowed from https://zserge.com/posts/carnatus/
@@ -15,7 +17,7 @@ type Piece struct {
     variant byte 
 }
 
-var pieceValueMap = map[byte]int{'P': 100, 'N': 280, 'B': 320, 'R': 479, 'Q': 929, 'K': 99999 }
+var pieceValueMap = map[byte]int{'.': 0, '-': 0, 'P': 100, 'N': 280, 'B': 320, 'R': 479, 'Q': 929, 'K': 99999 }
 
 func (p Piece) Value() int {
     return pieceValueMap[p.variant];
