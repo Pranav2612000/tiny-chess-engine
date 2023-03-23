@@ -8,17 +8,7 @@ func TestBoardFlip(t *testing.T) {
     // Create a test board with
     // - white h2, e4, Nf3
     // - black e7, Ra8
-    var board Board;
-    for index := range board {
-        board[index].position = index;
-
-        if int(index / 12) > 0 &&
-            int(index / 12) < 9 &&
-            int(index % 12) > 1 &&
-            int(index % 12) < 10 {
-            board[index].isPlayable = true;
-        }
-    }
+    board := GenerateEmptyBoard();
     board[33].piece = &Piece{color: 'W', variant: 'P'}
     board[55].piece = &Piece{color: 'W', variant: 'P'}
     board[44].piece = &Piece{color: 'W', variant: 'N'}
