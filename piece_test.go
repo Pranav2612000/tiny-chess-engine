@@ -55,3 +55,32 @@ func TestFlip(t *testing.T) {
         t.Error(`Failed to flip piece`);
     }
 }
+
+func TestGetMoves(t *testing.T) {
+    // Create a empty test Board with Qc2
+    board := GenerateEmptyBoard();
+
+    queen := Piece{color: 'W', variant: 'Q'};
+    board[33].piece = &queen;
+
+    moves := queen.GetMoves(33, &board);
+
+    movesIndex := []int{ 23, 43, 53, 63, 73, 83, 93, 32, 31, 34, 35, 36, 37, 38,
+                    22, 42, 51, 24, 44, 55, 66, 77, 88 };
+    for index, sq := range moves {
+        if (sq.position != movesIndex[index]) {
+            t.Errorf(`Position mismatch for move %v`, sq);
+            break;
+        }
+
+        if (sq.isPlayable != true) {
+            t.Errorf(`isPlayable mismatch for move %v`, sq);
+            break;
+        }
+
+        if (sq.piece != nil && sq.piece.variant != 'Q') {
+            t.Errorf(`Piece mismatch for move %v`, sq);
+            break;
+        }
+    }
+}
