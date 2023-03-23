@@ -23,10 +23,10 @@ func GenerateEmptyBoard() Board {
         // For invalid, border squares, set
         // isPlayable to false and pieceVariant
         // to <space>
-        if int(index / 12) > 0 &&
-            int(index / 12) < 9 &&
-            int(index % 12) > 1 &&
-            int(index % 12) < 10 {
+        if int(index / 10) > 1 &&
+            int(index / 10) < 10 &&
+            int(index % 10) > 0 &&
+            int(index % 10) < 9 {
             board[index].isPlayable = true;
         }
     }
