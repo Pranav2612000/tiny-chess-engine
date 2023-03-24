@@ -22,3 +22,28 @@ func (p *Position) Flip() {
     p.bc = [2]bool{temp[0], temp[1]}
 }
 
+/* Function to return a list of our possible moves */
+func (pos *Position) Moves() (moves Moves) {
+    moves = make(map[Square][]Square);
+    for _, sq := range pos.board {
+        // Ignore the non-playable squares
+        if !sq.isPlayable {
+            continue;
+        }
+
+        // Return early if there is no piece on this square
+        piece := sq.piece;
+        if piece == nil {
+            continue;
+        }
+
+        // Return early if piece does not belong to us
+        if !piece.Ours() {
+            continue;
+        }
+
+        currentPieceMoves := piece.GetMoves(sq.position, pos.board);
+        moves[sq] = currentPieceMoves;
+    }
+    return moves;
+}
