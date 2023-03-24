@@ -47,3 +47,17 @@ func (pos *Position) Moves() (moves Moves) {
     }
     return moves;
 }
+
+func CreateStartPosition() Position {
+    board := GenerateInitialPositionBoard();
+    DrawBoard(&board);
+
+    return Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{false, false},
+        bc: [2]bool{false, false},
+        ep: nil,
+        kp: nil,
+    }
+}
