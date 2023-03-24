@@ -33,3 +33,64 @@ func TestPositionFlip(t *testing.T) {
         t.Error(`bc not flipped when flipping position`);
     }
 }
+
+func TestPositionMoves(t *testing.T) {
+    // Create a test board with
+    // - white h2, Ke4, Nf3, Rh1,Bc5
+    // - black b6, Ra8
+    board := GenerateEmptyBoard();
+    h2 := Piece{color: 'W', variant: 'P'};
+    Ke4 := Piece{color: 'W', variant: 'K'}
+    Nf3 := Piece{color: 'W', variant: 'N'}
+    Rh1 := Piece{color: 'W', variant: 'R'}
+    Bc5 := Piece{color: 'W', variant: 'B'}
+    b6 :=  Piece{color: 'B', variant: 'p'}
+    Ra8 := Piece{color: 'B', variant: 'r'}
+
+    board[38].piece = &h2
+    board[55].piece = &Ke4
+    board[46].piece = &Nf3
+    board[28].piece = &Rh1
+    board[63].piece = &Bc5
+    board[72].piece = &b6
+    board[91].piece = &Ra8
+
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+    };
+    allMoves := position.Moves();
+
+    movesStringified := make(map[Piece] []int);
+    movesStringified[h2] = []int{48, 58}
+    movesStringified[Ke4] = []int{65, 45, 56, 54, 66, 64, 44}
+    movesStringified[Nf3] = []int{67, 65, 58, 27, 25, 34, 54}
+    movesStringified[Rh1] = []int{27, 26, 25, 24, 23, 22, 21}
+    movesStringified[Bc5] = []int{74, 85, 96, 54, 45, 36, 27, 72, 52, 41}
+
+    for start, moves := range allMoves {
+        currentPiece := (*start.piece);
+        currentPieceMoves := movesStringified[currentPiece];
+        for index, sq := range moves {
+            if (sq.position != currentPieceMoves[index]) {
+                t.Errorf(`Piece: %s - Position mismatch for move %v`, string(currentPiece.variant), sq);
+                break;
+            }
+
+            if (sq.isPlayable != true) {
+                t.Errorf(`Piece: %s - isPlayable mismatch for move %v`, string(currentPiece.variant), sq);
+                break;
+            }
+
+            if (sq.piece != nil && sq.piece.variant != currentPiece.variant) {
+                t.Errorf(`Piece: %s - Piece mismatch for move %v`, string(currentPiece.variant), sq);
+                break;
+            }
+        }
+    }
+}
