@@ -56,7 +56,7 @@ func TestFlip(t *testing.T) {
     }
 }
 
-func TestGetMoves(t *testing.T) {
+func TestGetMovesForQueen(t *testing.T) {
     // Create a empty test Board with Qc2
     board := GenerateEmptyBoard();
 
@@ -79,6 +79,34 @@ func TestGetMoves(t *testing.T) {
         }
 
         if (sq.piece != nil && sq.piece.variant != 'Q') {
+            t.Errorf(`Piece mismatch for move %v`, sq);
+            break;
+        }
+    }
+}
+
+func TestGetMovesForPawn(t *testing.T) {
+    // Create a empty test Board with e2
+    board := GenerateEmptyBoard();
+
+    pawn := Piece{color: 'W', variant: 'P'};
+    board[35].piece = &pawn;
+
+    moves := pawn.GetMoves(35, &board);
+
+    movesIndex := []int{ 45, 55, 44, 46 };
+    for index, sq := range moves {
+        if (sq.position != movesIndex[index]) {
+            t.Errorf(`Position mismatch for move %v`, sq);
+            break;
+        }
+
+        if (sq.isPlayable != true) {
+            t.Errorf(`isPlayable mismatch for move %v`, sq);
+            break;
+        }
+
+        if (sq.piece != nil && sq.piece.variant != 'P') {
             t.Errorf(`Piece mismatch for move %v`, sq);
             break;
         }
