@@ -86,17 +86,41 @@ func TestGetMovesForQueen(t *testing.T) {
 }
 
 func TestGetMovesForPawn(t *testing.T) {
-    // Create a empty test Board with e2
+    // Create a empty test Board with
+    // W - e2, d4
+    // B - f3
     board := GenerateEmptyBoard();
 
-    pawn := Piece{color: 'W', variant: 'P'};
-    board[35].piece = &pawn;
+    pawnE2 := Piece{color: 'W', variant: 'P'};
+    pawnE4 := Piece{color: 'W', variant: 'P'};
+    board[35].piece = &pawnE2;
+    board[54].piece = &pawnE4;
+    board[46].piece = &Piece{color: 'B', variant: 'p'};
 
-    moves := pawn.GetMoves(35, &board);
+    movesE2 := pawnE4.GetMoves(35, &board);
+    movesD4 := pawnE4.GetMoves(54, &board);
 
-    movesIndex := []int{ 45, 55, 44, 46 };
-    for index, sq := range moves {
-        if (sq.position != movesIndex[index]) {
+    movesE2Index := []int{ 45, 55, 46 };
+    for index, sq := range movesE2 {
+        if (sq.position != movesE2Index[index]) {
+            t.Errorf(`Position mismatch for move %v`, sq);
+            break;
+        }
+
+        if (sq.isPlayable != true) {
+            t.Errorf(`isPlayable mismatch for move %v`, sq);
+            break;
+        }
+
+        if (sq.piece != nil && sq.piece.variant != 'P') {
+            t.Errorf(`Piece mismatch for move %v`, sq);
+            break;
+        }
+    }
+
+    movesD4Index := []int{ 64 };
+    for index, sq := range movesD4 {
+        if (sq.position != movesD4Index[index]) {
             t.Errorf(`Position mismatch for move %v`, sq);
             break;
         }

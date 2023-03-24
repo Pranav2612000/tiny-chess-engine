@@ -69,6 +69,20 @@ func (p *Piece) GetMoves(currentPosition int, b *Board) []Square {
                 break;
             }
 
+            // If the current piece is a pawn, then
+            if p.variant == 'P' {
+                // 1. we only allow diagonal moves if its a capture
+                if ( d == N + E || d == N + W ) &&
+                    ( newPositionSquare.piece == nil ||
+                        newPositionSquare.piece.Ours() ) {
+                    break;
+                }
+                // 2. we only allow 2 steps if its at its original position
+                if d == N + N && currentPosition / 10 != 3 {
+                    break;
+                }
+            }
+
             moves = append(moves, Square{position: j, piece: p, isPlayable: true});
 
             variant := ToUpper(byte(p.variant));
