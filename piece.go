@@ -19,7 +19,7 @@ type Piece struct {
     variant PieceType
 };
 
-const N, E, S, W = -10, -1, 10, 1;
+const N, E, S, W = 10, 1, -10, -1;
 
 var pieceValueMap = map[PieceType]int{'.': 0, '-': 0, 'P': 100, 'N': 280, 'B': 320, 'R': 479, 'Q': 929, 'K': 99999 }
 var movesMap = map[PieceType][]int{
