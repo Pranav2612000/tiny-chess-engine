@@ -65,8 +65,8 @@ func TestGetMovesForQueen(t *testing.T) {
 
     moves := queen.GetMoves(33, &board);
 
-    movesIndex := []int{ 23, 43, 53, 63, 73, 83, 93, 32, 31, 34, 35, 36, 37, 38,
-                    22, 42, 51, 24, 44, 55, 66, 77, 88 };
+    movesIndex := []int{ 43, 53, 63, 73, 83, 93, 23, 34, 35, 36, 37, 38, 32, 31,
+                    44, 55, 66, 77, 88, 24, 42, 51, 22 };
     for index, sq := range moves {
         if (sq.position != movesIndex[index]) {
             t.Errorf(`Position mismatch for move %v`, sq);
