@@ -123,3 +123,34 @@ func TestPositionMove(t *testing.T) {
         return;
     }
 }
+
+func TestGetValueOfMove(t *testing.T) {
+    board := GenerateEmptyBoard();
+    h2 := Piece{color: 'W', variant: 'P'};
+    g3 := Piece{color: 'B', variant: 'p'};
+    board[38].piece = &h2;
+    board[47].piece = &g3;
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+    };
+
+    from := Square{position: 38, piece: &h2, isPlayable: true};
+    to := Square{position: 48, piece: &h2, isPlayable: true};
+
+    score := position.GetValueOfMove(Move{from: &from, to: &to});
+    if score != -83 {
+        t.Errorf(`Incorrect score returned. Expected %d Actual %d`, -83, score);
+    }
+
+    toWithCapture := Square{position: 47, piece: &h2, isPlayable: true};
+    scoreWithCapture := position.GetValueOfMove(Move{from: &from, to: &toWithCapture});
+    if scoreWithCapture != 63 {
+        t.Errorf(`Incorrect score returned. Expected %d Actual %d`, -83, scoreWithCapture);
+    }
+}

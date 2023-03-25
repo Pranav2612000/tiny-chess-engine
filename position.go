@@ -58,6 +58,31 @@ func (pos *Position) Move(move Move) {
     return;
 }
 
+func (pos *Position) GetValueOfMove(move Move) int {
+    from := *move.from;
+    to := *move.to;
+    fromPiece := from.piece;
+    toPiece := to.piece;
+
+    score := toPiece.PSTValue(to.position) - fromPiece.PSTValue(from.position);
+
+    // if the move is a capture
+    if pos.board[to.position].piece != nil {
+        // add the PST value of the captured piece, from the opponents POV
+        capturedSquare := Square{
+            piece: &Piece{color: pos.board[to.position].piece.color, variant: pos.board[to.position].piece.variant},
+            position: to.position,
+            isPlayable: true,
+        }
+
+        capturedSquare.Flip();
+
+        score += capturedSquare.piece.PSTValue(capturedSquare.position);
+    }
+
+    return score;
+}
+
 func CreateStartPosition() Position {
     board := GenerateInitialPositionBoard();
     DrawBoard(&board);
