@@ -20,6 +20,14 @@ func main() {
     DrawBoard(position.board);
     var move string;
     for true {
+        var color string;
+        if position.turn {
+            color = "white";
+        } else {
+            color = "black";
+        }
+
+        fmt.Printf("%s's move: ", color);
         fmt.Scanln(&move);
 
         if move == "exit" {
@@ -33,8 +41,8 @@ func main() {
             fmt.Println("Please enter a valid move");
             continue;
         }
+        position.turn = !position.turn;
 
-        position.Flip();
         DrawBoard(position.board);
     }
     fmt.Println("Thank you for playing");
