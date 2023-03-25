@@ -17,8 +17,14 @@ type Position struct {
 func (p *Position) Flip() {
     p.board.Flip();
     p.score = -1 * p.score;
-    p.ep.Flip();
-    p.kp.Flip();
+
+    if p.ep != nil {
+        p.ep.Flip();
+    }
+
+    if p.kp != nil {
+        p.kp.Flip();
+    }
 
     var temp [2]bool;
     temp[0] = p.wc[0];
