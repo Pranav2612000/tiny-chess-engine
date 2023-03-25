@@ -2,6 +2,7 @@ package main
 
 import (
     "errors"
+    "fmt"
 )
 
 type Position struct {
@@ -48,14 +49,24 @@ func (pos *Position) Moves() (moves Moves) {
             continue;
         }
 
-        // Return early if piece does not belong to us
-        if !piece.Ours() {
+        // Return early if piece does not belong to the current player
+        if piece.Ours() != pos.turn {
             continue;
+        }
+
+        if (!pos.turn) {
+            sq.Flip();
         }
 
         currentPieceMoves := piece.GetMoves(sq.position, pos.board);
         moves[sq] = currentPieceMoves;
+
+        if (!pos.turn) {
+            sq.Flip();
+        }
     }
+
+    fmt.Printf("Moves: %v\n", moves);
     return moves;
 }
 
@@ -71,7 +82,14 @@ func (pos *Position) Move(move Move) {
 
 func (pos *Position) MoveFromNotation(notation string) (error) {
     allMoves := pos.Moves();
-    toSquare, err := GenerateSquareFromNotation(notation, 'W');
+    var color byte;
+    if pos.turn {
+        color = 'W';
+    } else {
+        color = 'B';
+    }
+    toSquare, err := GenerateSquareFromNotation(notation, color);
+    fmt.Printf("Square: %v\n", toSquare);
 
     if err != nil {
         return errors.New("Invalid notation");
