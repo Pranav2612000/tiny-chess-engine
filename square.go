@@ -35,18 +35,21 @@ func GenerateSquareFromNotation(notation string, color byte) (Square, error) {
             piece = Piece{color: color, variant: PieceType(byte(notation[0]))}
         }
 
-        if color == 'B' {
-            piece.Flip();
-        }
-
         row, err := strconv.Atoi(notation[len(notation) - 1:]);
         if err != nil {
             return Square{}, errors.New("Invalid row number");
         }
 
         columnChar := notation[len(notation) - 2];
+        column := columnLetterToNumberMap[byte(columnChar)];
 
-        position := (row + 1) * 10 + columnLetterToNumberMap[byte(columnChar)];
+        if color == 'B' {
+            piece.Flip();
+            row = 9 - row;
+            column = 9 - column;
+        }
+
+        position := (row + 1) * 10 + column;
 
         return Square{position: position, piece: &piece, isPlayable: true}, nil
 }

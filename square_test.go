@@ -30,7 +30,7 @@ func TestGenerateSquareFromNotation(t *testing.T) {
     }
 
     Nf3, _ := GenerateSquareFromNotation("Nf3", 'B');
-    if Nf3.position != 46 || Nf3.piece.variant != 'n' || Nf3.piece.color != 'B' {
+    if Nf3.position != 73 || Nf3.piece.variant != 'n' || Nf3.piece.color != 'B' {
         t.Errorf(`Failed to create square for %s`, "Nf3");
         return;
     }
