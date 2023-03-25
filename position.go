@@ -1,5 +1,9 @@
 package main
 
+import (
+    "errors"
+)
+
 type Position struct {
     board *Board
     score int
@@ -57,6 +61,37 @@ func (pos *Position) Move(move Move) {
     pos.board[from.position].piece = nil;
 
     return;
+}
+
+func (pos *Position) MoveFromNotation(notation string) (error) {
+    allMoves := pos.Moves();
+    toSquare, err := GenerateSquareFromNotation(notation, 'W');
+
+    if err != nil {
+        return errors.New("Invalid notation");
+    }
+
+    for start, moves := range allMoves {
+        currentPiece := (*start.piece);
+
+        if toSquare.piece.variant != currentPiece.variant {
+            continue;
+        }
+
+        movePossibleFromThisPiece := false;
+        for _, sq := range moves {
+            if sq.position == toSquare.position {
+                movePossibleFromThisPiece = true;
+                break;
+            }
+        }
+
+        if movePossibleFromThisPiece {
+            pos.Move(Move{from: &start, to: &toSquare});
+            return nil;
+        }
+    }
+    return errors.New("No piece satisfies the condition");
 }
 
 func (pos *Position) GetValueOfMove(move Move) int {

@@ -124,6 +124,35 @@ func TestPositionMove(t *testing.T) {
     }
 }
 
+func TestMoveFromNotation(t *testing.T) {
+    board := GenerateEmptyBoard();
+    h2 := Piece{color: 'W', variant: 'P'};
+    board[38].piece = &h2
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+    };
+
+    err := position.MoveFromNotation("h3");
+    if err != nil {
+        t.Errorf(`Position update failed. There was an error: %v`, err);
+        return;
+    }
+    if position.board[48].piece == nil {
+        t.Errorf(`Position update failed. Square is null`);
+        return;
+    }
+    if position.board[48].piece.variant != 'P' || position.board[48].piece.color != 'W' {
+        t.Errorf(`Position update failed. Incorrect piece at position`);
+        return;
+    }
+}
+
 func TestGetValueOfMove(t *testing.T) {
     board := GenerateEmptyBoard();
     h2 := Piece{color: 'W', variant: 'P'};
