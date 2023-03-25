@@ -94,3 +94,32 @@ func TestPositionMoves(t *testing.T) {
         }
     }
 }
+
+func TestPositionMove(t *testing.T) {
+    board := GenerateEmptyBoard();
+    h2 := Piece{color: 'W', variant: 'P'};
+    board[38].piece = &h2
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+    };
+
+    from := Square{position: 38, piece: &h2, isPlayable: true};
+    to := Square{position: 48, piece: &h2, isPlayable: true};
+
+    position.Move(Move{from: &from, to: &to});
+
+    if position.board[48].piece == nil {
+        t.Errorf(`Position update failed. Square is null`);
+        return;
+    }
+    if position.board[48].piece.variant != 'P' || position.board[48].piece.color != 'W' {
+        t.Errorf(`Position update failed. Incorrect piece at position`);
+        return;
+    }
+}

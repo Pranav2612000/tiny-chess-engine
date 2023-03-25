@@ -48,6 +48,16 @@ func (pos *Position) Moves() (moves Moves) {
     return moves;
 }
 
+func (pos *Position) Move(move Move) {
+    from := *move.from;
+    to := *move.to;
+
+    pos.board[to.position].piece = pos.board[from.position].piece;
+    pos.board[from.position].piece = nil;
+
+    return;
+}
+
 func CreateStartPosition() Position {
     board := GenerateInitialPositionBoard();
     DrawBoard(&board);
