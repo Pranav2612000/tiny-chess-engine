@@ -12,3 +12,10 @@ func (s *Square) Flip() {
         s.piece.Flip()
     }
 }
+
+func (s *Square) PSTValue() int {
+    if s.piece == nil {
+        return 0;
+    }
+    return s.piece.PSTValue(s.position);
+}
