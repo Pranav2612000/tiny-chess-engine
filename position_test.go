@@ -63,6 +63,7 @@ func TestPositionMoves(t *testing.T) {
         bc:[2]bool{false, true},
         ep: nil,
         kp: nil,
+        turn: true,
     };
     allMoves := position.Moves();
 
@@ -126,8 +127,8 @@ func TestPositionMove(t *testing.T) {
 
 func TestMoveFromNotation(t *testing.T) {
     board := GenerateEmptyBoard();
-    h2 := Piece{color: 'W', variant: 'P'};
-    board[38].piece = &h2
+    a7 := Piece{color: 'B', variant: 'p'};
+    board[81].piece = &a7
 
     position := Position{
         board: &board,
@@ -136,18 +137,19 @@ func TestMoveFromNotation(t *testing.T) {
         bc:[2]bool{false, true},
         ep: nil,
         kp: nil,
+        turn: false,
     };
 
-    err := position.MoveFromNotation("h3");
+    err := position.MoveFromNotation("a6");
     if err != nil {
         t.Errorf(`Position update failed. There was an error: %v`, err);
         return;
     }
-    if position.board[48].piece == nil {
+    if position.board[71].piece == nil {
         t.Errorf(`Position update failed. Square is null`);
         return;
     }
-    if position.board[48].piece.variant != 'P' || position.board[48].piece.color != 'W' {
+    if position.board[71].piece.variant != 'p' || position.board[71].piece.color != 'B' {
         t.Errorf(`Position update failed. Incorrect piece at position`);
         return;
     }

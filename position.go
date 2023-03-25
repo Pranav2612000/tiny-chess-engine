@@ -2,7 +2,6 @@ package main
 
 import (
     "errors"
-    "fmt"
 )
 
 type Position struct {
@@ -36,6 +35,12 @@ func (p *Position) Flip() {
 
 /* Function to return a list of our possible moves */
 func (pos *Position) Moves() (moves Moves) {
+    // If its black's turn we want the moves from his perspective,
+    // so we flip the board for our internal calculations.
+    if (!pos.turn) {
+        pos.Flip();
+    }
+
     moves = make(map[Square][]Square);
     for _, sq := range pos.board {
         // Ignore the non-playable squares
@@ -49,24 +54,20 @@ func (pos *Position) Moves() (moves Moves) {
             continue;
         }
 
-        // Return early if piece does not belong to the current player
-        if piece.Ours() != pos.turn {
+        // Return early if piece does not belong to us
+        if !piece.Ours() {
             continue;
-        }
-
-        if (!pos.turn) {
-            sq.Flip();
         }
 
         currentPieceMoves := piece.GetMoves(sq.position, pos.board);
         moves[sq] = currentPieceMoves;
-
-        if (!pos.turn) {
-            sq.Flip();
-        }
     }
 
-    fmt.Printf("Moves: %v\n", moves);
+    // If we had previously flipped the board, we flip it back
+    // to the original position
+    if (!pos.turn) {
+        pos.Flip();
+    }
     return moves;
 }
 
@@ -89,7 +90,6 @@ func (pos *Position) MoveFromNotation(notation string) (error) {
         color = 'B';
     }
     toSquare, err := GenerateSquareFromNotation(notation, color);
-    fmt.Printf("Square: %v\n", toSquare);
 
     if err != nil {
         return errors.New("Invalid notation");
@@ -111,7 +111,20 @@ func (pos *Position) MoveFromNotation(notation string) (error) {
         }
 
         if movePossibleFromThisPiece {
+            // Since the move positions are calculated from White's POV,
+            // if its black's move we first flip the board before we apply
+            // the move
+            if (!pos.turn) {
+                pos.Flip();
+            }
+
             pos.Move(Move{from: &start, to: &toSquare});
+
+            // Once the move has been successful, we flip the board back to
+            // the original
+            if (!pos.turn) {
+                pos.Flip();
+            }
             return nil;
         }
     }
