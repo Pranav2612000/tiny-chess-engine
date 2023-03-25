@@ -7,6 +7,7 @@ type Position struct {
     bc [2]bool
     ep *Square
     kp *Square
+    turn bool // true for white, false for black
 }
 
 func (p *Position) Flip() {
