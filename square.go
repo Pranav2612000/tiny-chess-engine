@@ -46,7 +46,7 @@ func GenerateSquareFromNotation(notation string, color byte) (Square, error) {
 
         columnChar := notation[len(notation) - 2];
 
-        position := row * 10 + columnLetterToNumberMap[byte(columnChar)];
+        position := (row + 1) * 10 + columnLetterToNumberMap[byte(columnChar)];
 
         return Square{position: position, piece: &piece, isPlayable: true}, nil
 }
