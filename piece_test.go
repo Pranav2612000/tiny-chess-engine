@@ -85,6 +85,14 @@ func TestGetMovesForQueen(t *testing.T) {
     }
 }
 
+func TestPSTValue(t *testing.T) {
+    king := Piece{color: 'W', variant: 'K'}
+    value := king.PSTValue(45);
+    if value != 59933 {
+        t.Errorf(`Incorrect PST Value Expected: %d, Actual: %d`, 59933, value);
+    }
+}
+
 func TestGetMovesForPawn(t *testing.T) {
     // Create a empty test Board with
     // W - e2, d4
