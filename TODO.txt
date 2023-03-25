@@ -1,0 +1,2 @@
+- Add tests for Square.PSTValue()
+- Refactor Position.GetValueOfMove to use Square.PSTValue()
