@@ -95,18 +95,22 @@ func TestPSTValue(t *testing.T) {
 
 func TestGetMovesForPawn(t *testing.T) {
     // Create a empty test Board with
-    // W - e2, d4
-    // B - f3
+    // W - e2, d4, a4
+    // B - f3, a5
     board := GenerateEmptyBoard();
 
     pawnE2 := Piece{color: 'W', variant: 'P'};
-    pawnE4 := Piece{color: 'W', variant: 'P'};
+    pawnD4 := Piece{color: 'W', variant: 'P'};
+    pawnA4 := Piece{color: 'W', variant: 'P'};
     board[35].piece = &pawnE2;
-    board[54].piece = &pawnE4;
+    board[54].piece = &pawnD4;
+    board[51].piece = &pawnA4;
     board[46].piece = &Piece{color: 'B', variant: 'p'};
+    board[61].piece = &Piece{color: 'B', variant: 'p'};
 
-    movesE2 := pawnE4.GetMoves(35, &board);
-    movesD4 := pawnE4.GetMoves(54, &board);
+    movesE2 := pawnE2.GetMoves(35, &board);
+    movesD4 := pawnD4.GetMoves(54, &board);
+    movesA4 := pawnA4.GetMoves(61, &board);
 
     movesE2Index := []int{ 45, 55, 46 };
     for index, sq := range movesE2 {
@@ -142,5 +146,9 @@ func TestGetMovesForPawn(t *testing.T) {
             t.Errorf(`Piece mismatch for move %v`, sq);
             break;
         }
+    }
+
+    if len(movesA4) == 0 {
+        t.Errorf(`Invalid moves suggested for %v`, pawnA4);
     }
 }

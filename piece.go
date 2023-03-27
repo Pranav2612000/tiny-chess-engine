@@ -92,7 +92,15 @@ func (p *Piece) GetMoves(currentPosition int, b *Board) []Square {
                         newPositionSquare.piece.Ours() ) {
                     break;
                 }
-                // 2. we only allow 2 steps if its at its original position
+
+                // 2. we only allow going straight if its not a capture
+                if d == N &&
+                    newPositionSquare.piece != nil &&
+                    !newPositionSquare.piece.Ours() {
+                    break;
+                }
+
+                // 3. we only allow 2 steps if its at its original position
                 if d == N + N && currentPosition / 10 != 3 {
                     break;
                 }
