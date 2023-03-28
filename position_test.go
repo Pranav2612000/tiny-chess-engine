@@ -191,7 +191,9 @@ func TestGetKingPosition(t *testing.T) {
     // - white Ke8
     board := GenerateEmptyBoard();
     Ke8 := Piece{color: 'W', variant: 'K'};
+    Ke7 := Piece{color: 'B', variant: 'k'};
     board[95].piece = &Ke8;
+    board[94].piece = &Ke7;
 
     position := Position{
         board: &board,
@@ -204,8 +206,13 @@ func TestGetKingPosition(t *testing.T) {
     };
 
     kingSquare, _ := position.GetKingPosition()
+    opponentKingSquare, _ := position.GetOpponentKingPosition()
 
     if kingSquare.position != 95 {
         t.Errorf("Incorrect King square. Expected: %v Actual: %v", kingSquare, board[95])
+    }
+
+    if opponentKingSquare.position != 94 {
+        t.Errorf("Incorrect King square. Expected: %v Actual: %v", kingSquare, board[94])
     }
 }

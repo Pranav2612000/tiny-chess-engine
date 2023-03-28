@@ -169,6 +169,19 @@ func (pos *Position) GetKingPosition() (Square, error)  {
     return Square{}, errors.New("No king on the board")
 }
 
+func (pos *Position) GetOpponentKingPosition() (Square, error)  {
+    for _, sq := range pos.board {
+        if sq.piece == nil {
+            continue;
+        }
+
+        if sq.piece.variant == 'k' {
+            return sq, nil
+        }
+    }
+    return Square{}, errors.New("No king on the board")
+}
+
 func CreateStartPosition() Position {
     board := GenerateInitialPositionBoard();
     DrawBoard(&board);
