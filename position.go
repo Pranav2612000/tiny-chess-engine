@@ -188,6 +188,37 @@ func (pos *Position) GetOpponentKingPosition() (Square, error)  {
     return Square{}, errors.New("No king on the board")
 }
 
+func (pos *Position) MovesThreateningKing() []Move {
+    // Flip the board to get the moves from opponents perspective
+    pos.Flip();
+
+    // Get the position of the opponent's opponent's (i.e current player's) king
+    king, _ := pos.GetOpponentKingPosition()
+
+    var movesThreateningKing []Move;
+
+    // Get all moves for opponent
+    allMoves := pos.RawMoves();
+
+    // and iterate through them to search for moves which are a check
+    for start, moves := range allMoves {
+        for _, sq := range moves {
+            if sq.position == king.position {
+                movesThreateningKing = append(movesThreateningKing, Move{
+                    from: &Square{position: 119 - start.position, piece: start.piece, isPlayable: true},
+                    to: &Square{position: 119 - sq.position, piece: sq.piece, isPlayable: true},
+                })
+                break;
+            }
+        }
+    }
+
+    // Unflip the flipped board
+    pos.Flip();
+
+    return movesThreateningKing
+}
+
 func CreateStartPosition() Position {
     board := GenerateInitialPositionBoard();
     DrawBoard(&board);

@@ -2,6 +2,7 @@ package main
 
 import (
     "testing"
+    "sort"
 )
 
 func TestPositionFlip(t *testing.T) {
@@ -214,5 +215,43 @@ func TestGetKingPosition(t *testing.T) {
 
     if opponentKingSquare.position != 94 {
         t.Errorf("Incorrect King square. Expected: %v Actual: %v", kingSquare, board[94])
+    }
+}
+
+func TestMovesThreateningKing(t *testing.T) {
+    // Create a test board with
+    // - white Ke8
+    // - black Ra8, Nf6
+    // and black to play
+    board := GenerateEmptyBoard();
+    Ke8 := Piece{color: 'W', variant: 'K'};
+    Ra8 := Piece{color: 'B', variant: 'r'};
+    Nf6 := Piece{color: 'B', variant: 'n'};
+    board[95].piece = &Ke8;
+    board[91].piece = &Ra8;
+    board[76].piece = &Nf6;
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+        turn: false,
+    };
+
+    movesThreateningKing := position.MovesThreateningKing()
+
+    if len(movesThreateningKing) != 2 {
+        t.Error("Incorrect value for MovesThreateningKing")
+    }
+
+    sort.SliceStable(movesThreateningKing, func(i, j int) bool {
+        return movesThreateningKing[i].from.position < movesThreateningKing[j].from.position
+    })
+
+    if movesThreateningKing[0].from.position != 76 {
+        t.Errorf("Incorrect value for MovesThreateningKing - Check from Knight not included - %v", movesThreateningKing[0].from)
     }
 }
