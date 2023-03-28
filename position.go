@@ -43,6 +43,24 @@ func (pos *Position) Moves() (moves Moves) {
 
     moves = pos.RawMoves()
 
+    // if our king is under threat, our move should make our king safe
+    movesThreateningKing := pos.MovesThreateningKing();
+    if len(movesThreateningKing) != 0 {
+        for start, thisPieceMoves := range moves {
+            var validMoves []Square;
+            for _, sq := range thisPieceMoves {
+                pos.Move(Move{from: &start, to: &sq});
+
+                movesThreateningKingAfterThisMove := pos.MovesThreateningKing()
+                if len(movesThreateningKingAfterThisMove) == 0 {
+                    validMoves = append(validMoves, sq);
+                }
+
+                pos.Move(Move{from: &sq, to: &start});
+            }
+            moves[start] = validMoves
+        }
+    }
     // If we had previously flipped the board, we flip it back
     // to the original position
     if (!pos.turn) {
