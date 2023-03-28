@@ -97,6 +97,67 @@ func TestPositionMoves(t *testing.T) {
     }
 }
 
+func TestPositionMovesWithCheck(t *testing.T) {
+    // Create a test board with
+    // - white h2, Ke4, Nf3, Rh1,Bc5
+    // - black b6, Re8
+    board := GenerateEmptyBoard();
+    h2 := Piece{color: 'W', variant: 'P'};
+    Ke4 := Piece{color: 'W', variant: 'K'}
+    Nf3 := Piece{color: 'W', variant: 'N'}
+    Rh1 := Piece{color: 'W', variant: 'R'}
+    Bc5 := Piece{color: 'W', variant: 'B'}
+    b6 :=  Piece{color: 'B', variant: 'p'}
+    Ra8 := Piece{color: 'B', variant: 'r'}
+
+    board[38].piece = &h2
+    board[55].piece = &Ke4
+    board[46].piece = &Nf3
+    board[28].piece = &Rh1
+    board[63].piece = &Bc5
+    board[72].piece = &b6
+    board[95].piece = &Ra8
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+        turn: true,
+    };
+    allMoves := position.Moves();
+
+    movesStringified := make(map[Piece] []int);
+    movesStringified[h2] = []int{}
+    movesStringified[Ke4] = []int{56, 54, 66, 64, 44}
+    movesStringified[Nf3] = []int{65}
+    movesStringified[Rh1] = []int{}
+    movesStringified[Bc5] = []int{85}
+
+    for start, moves := range allMoves {
+        currentPiece := (*start.piece);
+        currentPieceMoves := movesStringified[currentPiece];
+        for index, sq := range moves {
+            if (sq.position != currentPieceMoves[index]) {
+                t.Errorf(`Piece: %s - Position mismatch for move %v`, string(currentPiece.variant), sq);
+                break;
+            }
+
+            if (sq.isPlayable != true) {
+                t.Errorf(`Piece: %s - isPlayable mismatch for move %v`, string(currentPiece.variant), sq);
+                break;
+            }
+
+            if (sq.piece != nil && sq.piece.variant != currentPiece.variant) {
+                t.Errorf(`Piece: %s - Piece mismatch for move %v`, string(currentPiece.variant), sq);
+                break;
+            }
+        }
+    }
+}
+
 func TestPositionMove(t *testing.T) {
     board := GenerateEmptyBoard();
     h2 := Piece{color: 'W', variant: 'P'};
