@@ -45,6 +45,11 @@ var pst = map[PieceType][120]int{
 func (p Piece) Value() int {
     return pieceValueMap[p.variant];
 }
+
+func (p Piece) Copy() Piece {
+    return Piece{color: p.color, variant: p.variant}
+}
+
 func (p Piece) Ours() bool {
     if IsUpper(string(p.variant)) {
         return true;
