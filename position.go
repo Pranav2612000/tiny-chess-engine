@@ -41,6 +41,17 @@ func (pos *Position) Moves() (moves Moves) {
         pos.Flip();
     }
 
+    moves = pos.RawMoves()
+
+    // If we had previously flipped the board, we flip it back
+    // to the original position
+    if (!pos.turn) {
+        pos.Flip();
+    }
+    return moves;
+}
+
+func (pos *Position) RawMoves() (moves Moves) {
     moves = make(map[Square][]Square);
     for _, sq := range pos.board {
         // Ignore the non-playable squares
@@ -63,12 +74,7 @@ func (pos *Position) Moves() (moves Moves) {
         moves[sq] = currentPieceMoves;
     }
 
-    // If we had previously flipped the board, we flip it back
-    // to the original position
-    if (!pos.turn) {
-        pos.Flip();
-    }
-    return moves;
+    return moves
 }
 
 func (pos *Position) Move(move Move) {
