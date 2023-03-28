@@ -185,3 +185,27 @@ func TestGetValueOfMove(t *testing.T) {
         t.Errorf(`Incorrect score returned. Expected %d Actual %d`, -83, scoreWithCapture);
     }
 }
+
+func TestGetKingPosition(t *testing.T) {
+    // Create a test board with
+    // - white Ke8
+    board := GenerateEmptyBoard();
+    Ke8 := Piece{color: 'W', variant: 'K'};
+    board[95].piece = &Ke8;
+
+    position := Position{
+        board: &board,
+        score: 0,
+        wc: [2]bool{true, false},
+        bc:[2]bool{false, true},
+        ep: nil,
+        kp: nil,
+        turn: false,
+    };
+
+    kingSquare, _ := position.GetKingPosition()
+
+    if kingSquare.position != 95 {
+        t.Errorf("Incorrect King square. Expected: %v Actual: %v", kingSquare, board[95])
+    }
+}

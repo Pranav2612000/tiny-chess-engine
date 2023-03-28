@@ -156,6 +156,19 @@ func (pos *Position) GetValueOfMove(move Move) int {
     return score;
 }
 
+func (pos *Position) GetKingPosition() (Square, error)  {
+    for _, sq := range pos.board {
+        if sq.piece == nil {
+            continue;
+        }
+
+        if sq.piece.variant == 'K' {
+            return sq, nil
+        }
+    }
+    return Square{}, errors.New("No king on the board")
+}
+
 func CreateStartPosition() Position {
     board := GenerateInitialPositionBoard();
     DrawBoard(&board);
