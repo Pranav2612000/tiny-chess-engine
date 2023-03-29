@@ -21,10 +21,20 @@ func main() {
     var move string;
     for true {
         var color string;
+        var oppositeColor string;
         if position.turn {
             color = "white";
+            oppositeColor = "black"
         } else {
             color = "black";
+            oppositeColor = "white"
+        }
+
+        // If the current player has no possible moves we end the game
+        moves := position.Moves();
+        if moves.GetNumberOfMoves() == 0 {
+            fmt.Printf("Game over!! %s wins\n", oppositeColor);
+            break;
         }
 
         fmt.Printf("%s's move: ", color);
