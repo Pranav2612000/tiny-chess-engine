@@ -106,7 +106,10 @@ func (p *Piece) GetMoves(currentPosition int, b *Board) []Square {
                 }
 
                 // 3. we only allow 2 steps if its at its original position
-                if d == N + N && currentPosition / 10 != 3 {
+                //    and the move is not a capture
+                if d == N + N &&
+                  ( currentPosition / 10 != 3 ||
+                    ( newPositionSquare.piece != nil && !newPositionSquare.piece.Ours() )) {
                     break;
                 }
             }
