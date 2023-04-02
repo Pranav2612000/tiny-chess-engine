@@ -135,6 +135,7 @@ func (pos *Position) Move(move Move) {
     pos.board[to.position].piece = pos.board[from.position].piece;
     pos.board[from.position].piece = nil;
 
+    pos.score += pos.GetValueOfMove(move);
     return;
 }
 
