@@ -14,7 +14,14 @@ type Square struct {
 var columnLetterToNumberMap = map[byte]int{ 'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8 }
 
 func (s *Square) Copy() Square {
-  piece := s.piece.Copy()
+  if s == nil {
+    return Square{};
+  }
+
+  var piece Piece;
+  if s.piece != nil {
+    piece = s.piece.Copy()
+  }
   return Square{ position: s.position, piece: &piece, isPlayable: s.isPlayable };
 }
 
