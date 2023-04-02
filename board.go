@@ -6,7 +6,7 @@ func (b *Board) Copy() Board {
   var board Board;
 
   for index := range b {
-    b[index] = b[index].Copy();
+    board[index] = b[index].Copy();
   }
 
   return board;
