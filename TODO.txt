@@ -1,12 +1,15 @@
 - Add tests for Square.PSTValue()
 - Refactor Position.GetValueOfMove to use Square.PSTValue()
 - Add tests for error cases
-- func to initialize position
+- [DONE] func to initialize position
 - [DONE] bug in pawn capture W - e4, d4 B - d5 White plays ed4 results in the d pawn being pushed
 - Support for the following moves
     - Left Castle
     - Right Castle
     - enpassant
+    - pawn promotion
 - [DONE] Get list of moves causing Check
-- Dont allow other moves when in Check
-- Game end
+- [DONE] Dont allow other moves when in Check
+- [DONE] Game end
+- [DONE] Allow 1 player game
+- Prevent a pinned piece from moving
