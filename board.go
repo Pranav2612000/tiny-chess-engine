@@ -2,6 +2,16 @@ package main
 
 type Board [120]Square;
 
+func (b *Board) Copy() Board {
+  var board Board;
+
+  for index := range b {
+    b[index] = b[index].Copy();
+  }
+
+  return board;
+}
+
 func (b *Board) Flip() {
     var flippedBoard Board;
     for index := range b {
