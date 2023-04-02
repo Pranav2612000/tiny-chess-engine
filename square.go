@@ -18,11 +18,13 @@ func (s *Square) Copy() Square {
     return Square{};
   }
 
-  var piece Piece;
+  var piecePtr *Piece;
+  piecePtr = nil;
   if s.piece != nil {
-    piece = s.piece.Copy()
+    piece := s.piece.Copy()
+    piecePtr = &piece
   }
-  return Square{ position: s.position, piece: &piece, isPlayable: s.isPlayable };
+  return Square{ position: s.position, piece: piecePtr, isPlayable: s.isPlayable };
 }
 
 func (s *Square) Flip() {
