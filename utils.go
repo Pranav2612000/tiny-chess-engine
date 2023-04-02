@@ -23,3 +23,8 @@ func flipByteCase(b byte) byte {
     }
     return byte(unicode.ToUpper(rune(b)));
 }
+
+func Abs(n int) int {
+  return int((int64(n) ^ int64(n)>>63) - int64(n)>>63)
+}
+
