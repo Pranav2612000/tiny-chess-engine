@@ -40,6 +40,11 @@ func (s *Searcher) SearchMove(pos Position, maxNodes int) (m Move) {
 func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma int, depth int) (score int) {
   s.nodes++;
 
+  e, ok := s.tp[pos];
+  if ok && e.depth >= depth  {
+    return e.score;
+  }
+
   if Abs(pos.score) > MateValue {
     return pos.score;
   }
