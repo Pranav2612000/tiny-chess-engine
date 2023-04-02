@@ -78,6 +78,9 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma int, 
     gamma: gamma,
     move: bestMove,
   };
+  if len(s.tp) > MaxTableSize {
+    s.tp = map[Position]entry{};
+  }
 
   return bestScore;
 }
