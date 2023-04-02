@@ -49,6 +49,7 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma int, 
     return pos.score;
   }
 
+  nullScore := pos.score;
   bestScore, bestMove := -3*MateValue, Move{};
 
   allMoves := pos.Moves()
@@ -73,6 +74,12 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma int, 
         bestScore, bestMove = score, move
       }
     }
+  }
+
+  // if we've exhausted the depth set, then we want to return the score at this position
+  // i.e the nullScore without saving it in transposition table
+  if depth <= 0 && bestScore < nullScore {
+    return nullScore;
   }
 
   s.tp[pos] = entry{
