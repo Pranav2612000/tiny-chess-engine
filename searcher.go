@@ -186,6 +186,11 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
     return nullScore;
   }
 
+  // Stalemate check: best move loses king + null move is better
+  if depth > 0 && bestScore <= -MateValue && nullScore > -MateValue {
+    bestScore = 0
+  }
+
   if !ok || depth > e.depth && bestScore > gamma {
     s.tp[pos] = entry{
       depth: depth,
