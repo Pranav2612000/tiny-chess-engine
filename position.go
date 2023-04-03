@@ -61,39 +61,36 @@ func (pos *Position) Moves() (moves Moves) {
 
     moves = pos.RawMoves()
 
-    // if our king is under threat, our move should make our king safe
-    movesThreateningKing := pos.MovesThreateningKing();
-    if len(movesThreateningKing) != 0 {
-        // to check for valid moves when under check, we perform the move,
-        // then check if the king has been made safe, and undo the move
-        for start, thisPieceMoves := range moves {
-            var validMoves []Square;
-            for _, sq := range thisPieceMoves {
-                var temp Square;
-                // if the current move is a capture, we need to store the captured piece details
-                // so that we can restore it back when we undo the move
-                if (pos.board[sq.position].piece != nil) {
-                    newPiece := pos.board[sq.position].piece.Copy()
-                    temp = Square{position:sq.position, piece: &newPiece, isPlayable: true}
-                }
-                // perform the move
-                pos.Move(Move{from: &start, to: &sq});
-
-                // check if the king is safe
-                movesThreateningKingAfterThisMove := pos.MovesThreateningKing()
-                if len(movesThreateningKingAfterThisMove) == 0 {
-                    validMoves = append(validMoves, sq);
-                }
-
-                // undo the move
-                pos.Move(Move{from: &sq, to: &start});
-
-                pos.board[temp.position] = temp
-
+    // to check if a moves does not cause king to be threatened, we perform the move,
+    // then check if the king has been made safe, and undo the move
+    for start, thisPieceMoves := range moves {
+        var validMoves []Square;
+        for _, sq := range thisPieceMoves {
+            var temp Square;
+            // if the current move is a capture, we need to store the captured piece details
+            // so that we can restore it back when we undo the move
+            if (pos.board[sq.position].piece != nil) {
+                newPiece := pos.board[sq.position].piece.Copy()
+                temp = Square{position:sq.position, piece: &newPiece, isPlayable: true}
             }
-            moves[start] = validMoves
+            // perform the move
+            pos.Move(Move{from: &start, to: &sq});
+
+            // check if the king is safe
+            movesThreateningKingAfterThisMove := pos.MovesThreateningKing()
+            if len(movesThreateningKingAfterThisMove) == 0 {
+                validMoves = append(validMoves, sq);
+            }
+
+            // undo the move
+            pos.Move(Move{from: &sq, to: &start});
+
+            pos.board[temp.position] = temp
+
         }
+        moves[start] = validMoves
     }
+
     // If we had previously flipped the board, we flip it back
     // to the original position
     if (!pos.turn) {
