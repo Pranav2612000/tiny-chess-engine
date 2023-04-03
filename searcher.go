@@ -147,7 +147,7 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
     nullScore = -1 * s.Search(flippedPos, alpha, beta, 1 - gamma, depth - 3);
   }
 
-  if nullScore > gamma {
+  if nullScore >= gamma {
     return nullScore
   }
 
@@ -161,7 +161,7 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
       move := Move{ from: &startCp, to: &sqCp} 
 
       
-      if depth <= 0 {
+      if depth <= 0 && pos.GetValueOfMove(move) < 150 {
         break;
       }
 
@@ -191,7 +191,7 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
     bestScore = 0
   }
 
-  if !ok || depth > e.depth && bestScore > gamma {
+  if !ok || depth >= e.depth && bestScore >= gamma {
     s.tp[pos] = entry{
       depth: depth,
       score: bestScore,
