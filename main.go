@@ -5,6 +5,7 @@ import (
     "flag"
 )
 
+var GlobalIsDebugMode bool;
 func startTwoPlayerGame () {
   fmt.Println("Starting a new 2 player game")
   board := GenerateInitialPositionBoard();
@@ -116,6 +117,7 @@ func startGameWithComputer() {
     }
 
     position.turn = !position.turn;
+    fmt.Printf("Position Score: %v\n", position.score);
 
   }
   fmt.Println("Thank you for playing");
@@ -123,7 +125,9 @@ func startGameWithComputer() {
 
 func main() {
   isTwoPlayerGame := flag.Bool("two-player", false, "Starts a two player game");
+  isDebugMode := flag.Bool("debug", false, "Shows debug logs");
   flag.Parse();
+  GlobalIsDebugMode = *isDebugMode;
 
   if (*isTwoPlayerGame) {
     startTwoPlayerGame();

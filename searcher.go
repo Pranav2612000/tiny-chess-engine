@@ -33,10 +33,8 @@ type Searcher struct {
 }
 
 func (s *Searcher) SearchMove(pos Position, maxNodes int) (m Move) {
-  fmt.Printf("Starting score %v, turn: %v\n", pos.score, pos.turn);
   s.nodes = 0;
 
-  fmt.Printf("Mate value %v\n", MateValue);
   for depth := 1; depth < 99; depth++ {
     alpha, beta := 3 * MateValue, -3 * MateValue;
     score := 0
@@ -56,6 +54,11 @@ func (s *Searcher) SearchMove(pos Position, maxNodes int) (m Move) {
     if Abs(score) >= MateValue || s.nodes >= maxNodes {
       break;
     }
+  }
+
+  if (GlobalIsDebugMode) {
+    fmt.Printf("Best Move| From: %v , To: %v\n", s.tp[pos].move.from, s.tp[pos].move.to);
+    fmt.Printf("Move score: %d", s.tp[pos].score - pos.score);
   }
 
   return s.tp[pos].move;
@@ -151,7 +154,6 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
   bestScore, bestMove := -3*MateValue, Move{};
 
   allMoves := pos.Moves()
-  //fmt.Printf("All moves: %v\n", allMoves);
   for start, moves := range allMoves {
     for _, sq := range moves {
       startCp := start.Copy();
@@ -198,6 +200,5 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
     }
   }
 
-  //fmt.Printf("%v %v %v", nullScore, bestScore, bestMove);
   return bestScore;
 }
