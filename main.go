@@ -61,7 +61,7 @@ func startTwoPlayerGame () {
 
 func startGameWithComputer() {
   computerColor := "white";
-  s := &Searcher{ tp: map[Position]entry{} }
+  s := &Searcher{ tp: map[PositionRaw]entry{} }
 
   fmt.Println("Starting a new game with Computer")
   board := GenerateInitialPositionBoard();
@@ -74,6 +74,7 @@ func startGameWithComputer() {
       kp: nil,
       turn: true,
   };
+  fmt.Printf("Initial Score %v\n", position.score);
 
   var move string;
   for true {
@@ -95,7 +96,16 @@ func startGameWithComputer() {
     }
 
     if color == computerColor {
-      moveRaw := s.SearchMove(position.Copy(), 10000);
+      cposition := position.Copy();
+      fmt.Printf("%v\n", position);
+      fmt.Printf("%v\n", cposition);
+      fmt.Printf("%v\n", cposition.board);
+      DrawBoard(cposition.board);
+      moveRaw := s.SearchMove(cposition, 10000);
+      fmt.Printf("%v\n", cposition.board);
+      DrawBoard(cposition.board);
+      fmt.Printf("\n%v\n", cposition);
+      fmt.Printf("%v\n", position);
       position.Move(moveRaw);
       DrawBoard(position.board);
     } else {

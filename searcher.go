@@ -27,41 +27,54 @@ type entry struct {
   move Move
 }
 
+type PositionRaw struct {
+  board Board
+  score int
+  wc [2]bool
+  bc [2]bool
+  ep Square
+  kp Square
+  turn bool
+}
+
 type Searcher struct {
-  tp map[Position]entry // transposition table to keep track of best move at a position
+  tp map[PositionRaw]entry // transposition table to keep track of best move at a position
   nodes int // Number of nodes to consider, to keep a check on the complexity of the calculations
 }
 
 func (s *Searcher) SearchMove(pos Position, maxNodes int) (m Move) {
   s.nodes = 0;
 
-  for depth := 1; depth < 99; depth++ {
+  for depth := 1; depth < 2; depth++ {
     alpha, beta := 3 * MateValue, -3 * MateValue;
     score := 0
-    for beta < alpha - 13 {
-      gamma := int(( alpha + beta + 1 ) / 2);
-      score := s.Search(pos, alpha, beta, gamma, depth);
+    //for beta < alpha - 13 {
+    gamma := int(( alpha + beta + 1 ) / 2);
+    score = s.Search(pos, alpha, beta, gamma, depth);
 
-      if score >= gamma {
-        beta = score;
-      }
-
-      if score < gamma {
-        alpha = score;
-      }
+    if score >= gamma {
+      beta = score;
     }
+
+    if score < gamma {
+      alpha = score;
+    }
+    //}
 
     if Abs(score) >= MateValue || s.nodes >= maxNodes {
       break;
     }
   }
 
+  posRaw := pos.CopyRaw();
   if (GlobalIsDebugMode) {
-    fmt.Printf("Best Move| From: %v , To: %v\n", s.tp[pos].move.from, s.tp[pos].move.to);
-    fmt.Printf("Move score: %d", s.tp[pos].score - pos.score);
+    _, ok := s.tp[posRaw];
+    fmt.Printf("Chosen TP %v \n Tp exists: %v", s.tp[posRaw], ok);
+    fmt.Printf("Best Move| From: %v , To: %v\n", s.tp[posRaw].move.from, s.tp[posRaw].move.to);
+    fmt.Printf("Move score: %d", s.tp[posRaw].score - pos.score);
   }
 
-  return s.tp[pos].move;
+  return s.tp[posRaw].move;
 }
 
 func (s *Searcher) SearchNew(pos Position, depth int, alpha, beta float64) (searchScore float64) {
@@ -74,7 +87,8 @@ func (s *Searcher) SearchNew(pos Position, depth int, alpha, beta float64) (sear
     return score;
   }
 
-  e, ok := s.tp[pos];
+  posRaw := pos.CopyRaw();
+  e, ok := s.tp[posRaw];
   if ok && e.depth >= depth  {
     return float64(e.score);
   }
@@ -115,7 +129,7 @@ func (s *Searcher) SearchNew(pos Position, depth int, alpha, beta float64) (sear
     }
   }
 
-  s.tp[pos] = entry{
+  s.tp[posRaw] = entry{
     depth: depth,
     score: int(bestScore),
     alpha: alpha,
@@ -127,9 +141,11 @@ func (s *Searcher) SearchNew(pos Position, depth int, alpha, beta float64) (sear
 }
 
 func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth int) (score int) {
+  fmt.Printf("Iteration %v %v %v \n", gamma, depth, pos);
   s.nodes++;
 
-  e, ok := s.tp[pos];
+  posRaw := pos.CopyRaw()
+  e, ok := s.tp[posRaw];
   if ok && e.depth >= depth && ((e.score < e.gamma && e.score < gamma) ||
       (e.score >= e.gamma && e.score >= gamma)) {
     return e.score;
@@ -144,24 +160,28 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
     flippedPos := pos.Copy();
     flippedPos.Flip();
 
+    fmt.Printf("Fetching null score for depth %v\n", depth); 
     nullScore = -1 * s.Search(flippedPos, alpha, beta, 1 - gamma, depth - 3);
   }
 
   if nullScore >= gamma {
+    fmt.Print("Exited because nullScore greater than gamma"); 
     return nullScore
   }
 
   bestScore, bestMove := -3*MateValue, Move{};
 
   allMoves := pos.Moves()
+  fmt.Printf("\n\nMoves: %v\n\n", allMoves);
   for start, moves := range allMoves {
     for _, sq := range moves {
       startCp := start.Copy();
       sqCp := sq.Copy();
       move := Move{ from: &startCp, to: &sqCp} 
+      fmt.Printf("Computation for Move: %v - %v with value %v\n", move.from, move.to, pos.GetValueOfMove(move));
 
       
-      if depth <= 0 && pos.GetValueOfMove(move) < 150 {
+      if depth <= 0 /*&& pos.GetValueOfMove(move) < 150*/ {
         break;
       }
 
@@ -192,7 +212,8 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
   }
 
   if !ok || depth >= e.depth && bestScore >= gamma {
-    s.tp[pos] = entry{
+    fmt.Printf("Adding the following entry %v", posRaw);
+    s.tp[posRaw] = entry{
       depth: depth,
       score: bestScore,
       alpha: float64(alpha),
@@ -201,7 +222,8 @@ func (s *Searcher) Search(pos Position, alpha int, beta int, gamma int, depth in
       move: bestMove,
     };
     if len(s.tp) > MaxTableSize {
-      s.tp = map[Position]entry{};
+      fmt.Print("Clearing table");
+      s.tp = map[PositionRaw]entry{};
     }
   }
 

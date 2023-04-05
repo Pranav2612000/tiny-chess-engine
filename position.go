@@ -14,6 +14,24 @@ type Position struct {
     turn bool // true for white, false for black
 }
 
+func (p *Position) CopyRaw() PositionRaw {
+  var position PositionRaw;
+
+  board := p.board.Copy();
+  ep := p.ep.Copy();
+  kp := p.kp.Copy();
+
+  position.board = board;
+  position.score = p.score;
+  position.wc = [2]bool{p.wc[0], p.wc[1]};
+  position.bc = [2]bool{p.bc[0], p.bc[1]};
+  position.ep = ep;
+  position.kp = kp;
+  position.turn = p.turn;
+
+  return position;
+}
+
 func (p *Position) Copy() Position {
   var position Position;
 
