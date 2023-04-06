@@ -156,6 +156,10 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, depth int) 
 
       score := -1 * s.Search(flippedPos, beta, alpha, depth - 1);
 
+      if GlobalIsDebugMode {
+        fmt.Printf("Move from: %v to: %v moveScore: %v posScore: %v\n", move.from, move.to, pos.GetValueOfMove(move), score);
+      }
+
       if score > bestScore {
         bestScore, bestMove = score, move
       }
