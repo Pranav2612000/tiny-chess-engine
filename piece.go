@@ -62,7 +62,8 @@ func (p *Piece) Flip() {
 }
 
 func (p *Piece) PSTValue(position int) int {
-    return pst[p.variant][position];
+    variant := p.variant;
+    return pst[PieceType(ToUpper(byte(variant)))][position];
 }
 
 func (p *Piece) GetMoves(currentPosition int, b *Board) []Square {
