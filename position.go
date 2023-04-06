@@ -224,8 +224,6 @@ func (pos *Position) GetValueOfMove(move Move) int {
             isPlayable: true,
         }
 
-        capturedSquare.Flip();
-
         score += capturedSquare.piece.PSTValue(capturedSquare.position);
     }
 

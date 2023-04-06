@@ -243,8 +243,8 @@ func TestGetValueOfMove(t *testing.T) {
 
     toWithCapture := Square{position: 47, piece: &h2, isPlayable: true};
     scoreWithCapture := position.GetValueOfMove(Move{from: &from, to: &toWithCapture});
-    if scoreWithCapture != 63 {
-        t.Errorf(`Incorrect score returned. Expected %d Actual %d`, -83, scoreWithCapture);
+    if scoreWithCapture != 98 {
+        t.Errorf(`Incorrect score returned. Expected %d Actual %d`, 98, scoreWithCapture);
     }
 }
 
