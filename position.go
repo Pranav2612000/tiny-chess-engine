@@ -92,7 +92,7 @@ func (pos *Position) Moves() (moves Moves) {
                 temp = Square{position:sq.position, piece: &newPiece, isPlayable: true}
             }
             // perform the move
-            pos.Move(Move{from: &start, to: &sq});
+            pos.Move(Move{from: &start, to: &sq}, true);
 
             // check if the king is safe
             movesThreateningKingAfterThisMove := pos.MovesThreateningKing()
@@ -101,7 +101,7 @@ func (pos *Position) Moves() (moves Moves) {
             }
 
             // undo the move
-            pos.Move(Move{from: &sq, to: &start});
+            pos.Move(Move{from: &sq, to: &start}, true);
 
             pos.board[temp.position] = temp
 
@@ -143,14 +143,16 @@ func (pos *Position) RawMoves() (moves Moves) {
     return moves
 }
 
-func (pos *Position) Move(move Move) {
+func (pos *Position) Move(move Move, isPseudoMove bool) {
     from := *move.from;
     to := *move.to;
 
     pos.board[to.position].piece = pos.board[from.position].piece;
     pos.board[from.position].piece = nil;
 
-    pos.score += pos.GetValueOfMove(move);
+    if !isPseudoMove {
+      pos.score += pos.GetValueOfMove(move);
+    }
     return;
 }
 
@@ -191,7 +193,7 @@ func (pos *Position) MoveFromNotation(notation string) (error) {
                 pos.Flip();
             }
 
-            pos.Move(Move{from: &start, to: &toSquare});
+            pos.Move(Move{from: &start, to: &toSquare}, false);
 
             // Once the move has been successful, we flip the board back to
             // the original

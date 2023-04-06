@@ -90,7 +90,7 @@ func (s *Searcher) SearchNew(pos Position, depth int, alpha, beta float64) (sear
       move := Move{ from: &startCp, to: &sqCp} 
 
       flippedPos := pos.Copy();
-      flippedPos.Move(move);
+      flippedPos.Move(move, true);
       flippedPos.Flip();
 
       tempScore := -1 * s.SearchNew(flippedPos, depth - 1, -beta, -alpha);
@@ -145,7 +145,7 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, depth int) 
       move := Move{ from: &startCp, to: &sqCp} 
 
       flippedPos := pos.Copy();
-      flippedPos.Move(move);
+      flippedPos.Move(move, true);
       flippedPos.Flip();
 
       score := -1 * s.Search(flippedPos, beta, alpha, depth - 1);

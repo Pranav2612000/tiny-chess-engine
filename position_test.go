@@ -175,7 +175,7 @@ func TestPositionMove(t *testing.T) {
     from := Square{position: 38, piece: &h2, isPlayable: true};
     to := Square{position: 48, piece: &h2, isPlayable: true};
 
-    position.Move(Move{from: &from, to: &to});
+    position.Move(Move{from: &from, to: &to}, true);
 
     if position.board[48].piece == nil {
         t.Errorf(`Position update failed. Square is null`);

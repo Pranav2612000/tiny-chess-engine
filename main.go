@@ -106,7 +106,7 @@ func startGameWithComputer() {
     if color == computerColor {
       cposition := position.Copy();
       moveRaw := s.SearchMove(cposition, 10000);
-      position.Move(moveRaw);
+      position.Move(moveRaw, false);
       DrawBoard(position.board);
     } else {
       fmt.Printf("Your move: ");
