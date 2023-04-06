@@ -132,7 +132,7 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, depth int) 
     return pos.score;
   }
 
-  if (depth < 0) {
+  if (depth <= 0) {
     return pos.score;
   }
 
