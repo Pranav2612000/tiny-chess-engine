@@ -17,7 +17,7 @@ type Position struct {
 func (p *Position) CopyRaw() PositionRaw {
   var position PositionRaw;
 
-  board := p.board.Copy();
+  board := p.board.Stringify();
   ep := p.ep.Copy();
   kp := p.kp.Copy();
 
