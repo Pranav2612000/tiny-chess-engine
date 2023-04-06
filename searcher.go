@@ -138,6 +138,10 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, depth int) 
 
   bestScore, bestMove := -3*MateValue, Move{};
 
+  if GlobalIsDebugMode {
+    fmt.Printf("Position: %v, score: %v\n", pos.board.Stringify(), pos.score);
+  }
+
   allMoves := pos.Moves()
   for start, moves := range allMoves {
     for _, sq := range moves {
