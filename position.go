@@ -147,12 +147,13 @@ func (pos *Position) Move(move Move, isPseudoMove bool) {
     from := *move.from;
     to := *move.to;
 
-    pos.board[to.position].piece = pos.board[from.position].piece;
-    pos.board[from.position].piece = nil;
-
     if !isPseudoMove {
       pos.score += pos.GetValueOfMove(move);
     }
+
+    pos.board[to.position].piece = pos.board[from.position].piece;
+    pos.board[from.position].piece = nil;
+
     return;
 }
 
