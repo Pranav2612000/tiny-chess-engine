@@ -23,6 +23,11 @@ func startTwoPlayerGame () {
   for true {
       var color string;
       var oppositeColor string;
+
+      if GlobalIsDebugMode {
+        fmt.Printf("Score %v\n", position.score);
+      }
+
       if position.turn {
           color = "white";
           oppositeColor = "black"
@@ -87,7 +92,9 @@ func startGameWithComputer() {
       oppositeColor = "white";
     }
 
-    fmt.Printf("Score %v\n", position.score);
+    if GlobalIsDebugMode {
+      fmt.Printf("Score %v\n", position.score);
+    }
 
     // If the current player has no possible moves we end the game
     moves := position.Moves();
@@ -119,7 +126,6 @@ func startGameWithComputer() {
     }
 
     position.turn = !position.turn;
-    fmt.Printf("Position Score: %v\n", position.score);
 
   }
   fmt.Println("Thank you for playing");
