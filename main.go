@@ -74,7 +74,6 @@ func startGameWithComputer() {
       kp: nil,
       turn: true,
   };
-  fmt.Printf("Initial Score %v\n", position.score);
 
   var move string;
   for true {
@@ -88,6 +87,8 @@ func startGameWithComputer() {
       oppositeColor = "white";
     }
 
+    fmt.Printf("Score %v\n", position.score);
+
     // If the current player has no possible moves we end the game
     moves := position.Moves();
     if moves.GetNumberOfMoves() == 0 {
@@ -97,19 +98,10 @@ func startGameWithComputer() {
 
     if color == computerColor {
       cposition := position.Copy();
-      fmt.Printf("%v\n", position);
-      fmt.Printf("%v\n", cposition);
-      fmt.Printf("%v\n", cposition.board);
-      DrawBoard(cposition.board);
       moveRaw := s.SearchMove(cposition, 10000);
-      fmt.Printf("%v\n", cposition.board);
-      DrawBoard(cposition.board);
-      fmt.Printf("\n%v\n", cposition);
-      fmt.Printf("%v\n", position);
       position.Move(moveRaw);
       DrawBoard(position.board);
     } else {
-      //fmt.Printf("The computer played %v\n", move);
       fmt.Printf("Your move: ");
       fmt.Scanln(&move);
 
