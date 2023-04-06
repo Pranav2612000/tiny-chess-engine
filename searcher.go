@@ -42,10 +42,12 @@ type Searcher struct {
 func (s *Searcher) SearchMove(pos Position, maxNodes int) (m Move) {
   s.nodes = 0;
 
+  /*
   for depth := 1; depth < 4; depth++ {
-    alpha, beta := float64(-3 * MateValue), float64(3 * MateValue);
-    s.Search(pos, alpha, beta, depth);
   }
+  */
+  alpha, beta := float64(-3 * MateValue), float64(3 * MateValue);
+  s.Search(pos, alpha, beta, 1);
 
   posRaw := pos.CopyRaw();
   fmt.Printf("Current pos: %v\n\n", posRaw);
@@ -127,6 +129,10 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, depth int) 
   posRaw := pos.CopyRaw();
 
   if Abs(pos.score) > MateValue {
+    return pos.score;
+  }
+
+  if (depth < 0) {
     return pos.score;
   }
 
