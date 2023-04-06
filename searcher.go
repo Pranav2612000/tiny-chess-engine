@@ -20,9 +20,6 @@ type entry struct {
   alpha float64 // alpha value at the current node
   beta float64 // beta value at the current node
 
-  // Value used for windowing
-  gamma int
-
   // best move at this node
   move Move
 }
@@ -47,8 +44,7 @@ func (s *Searcher) SearchMove(pos Position, maxNodes int) (m Move) {
 
   for depth := 1; depth < 4; depth++ {
     alpha, beta := float64(-3 * MateValue), float64(3 * MateValue);
-    gamma := int(( alpha + beta + 1 ) / 2);
-    s.Search(pos, alpha, beta, gamma, depth);
+    s.Search(pos, alpha, beta, depth);
   }
 
   posRaw := pos.CopyRaw();
@@ -120,13 +116,12 @@ func (s *Searcher) SearchNew(pos Position, depth int, alpha, beta float64) (sear
     score: int(bestScore),
     alpha: alpha,
     beta: beta,
-    gamma: 0,
     move: bestMove,
   };
 	return alpha;
 }
 
-func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma, depth int) (score int) {
+func (s *Searcher) Search(pos Position, alpha float64, beta float64, depth int) (score int) {
 
   s.nodes++;
   posRaw := pos.CopyRaw();
@@ -153,7 +148,7 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma, dept
       flippedPos.Move(move);
       flippedPos.Flip();
 
-      score := -1 * s.Search(flippedPos, beta, alpha, gamma, depth - 1);
+      score := -1 * s.Search(flippedPos, beta, alpha, depth - 1);
 
       if score > bestScore {
         bestScore, bestMove = score, move
@@ -166,7 +161,6 @@ func (s *Searcher) Search(pos Position, alpha float64, beta float64, gamma, dept
     score: bestScore,
     alpha: alpha,
     beta: beta,
-    gamma: gamma,
     move: bestMove,
   };
 
