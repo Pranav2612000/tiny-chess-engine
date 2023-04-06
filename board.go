@@ -88,3 +88,26 @@ func GenerateInitialPositionBoard() Board {
 
     return board;
 }
+
+func (b *Board) Stringify() string {
+  var strBoard = "";
+  for index,sq := range b {
+    // Add a new row symbol if we are at the end of this row
+    if index % 10 == 9 {
+      strBoard += string('/');
+    }
+
+    // If a square is not playable, we don't consider this square
+    if !sq.isPlayable {
+      continue
+    }
+
+    if sq.piece == nil || sq.piece.variant == '-' {
+      strBoard += string('.');
+      continue;
+    }
+
+    strBoard += string(sq.piece.variant);
+  }
+  return strBoard;
+}

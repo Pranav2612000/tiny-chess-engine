@@ -38,3 +38,13 @@ func TestBoardFlip(t *testing.T) {
         t.Error(`Board Flip failed for Ra8`);
     }
 }
+
+func TestBoardStringify(t *testing.T) {
+  board := GenerateInitialPositionBoard();
+  strBoard := board.Stringify();
+  expectedStrBoard := "//RNBQKBNR/PPPPPPPP/......../......../......../......../pppppppp/rnbqkbnr///"
+
+  if strBoard != expectedStrBoard {
+    t.Errorf(`Board stringify failed expected: %v actual: %v`, expectedStrBoard, strBoard);
+  }
+}
