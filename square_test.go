@@ -35,3 +35,22 @@ func TestGenerateSquareFromNotation(t *testing.T) {
         return;
     }
 }
+
+func TestSquareCopy(t *testing.T) {
+    piece := Piece{color: 'W', variant: 'P'};
+    square := Square{position: 27, piece: &piece, isPlayable: true};
+    copiedSquare := square.Copy();
+
+    if copiedSquare == square {
+      t.Error(`No new square created while copying`);
+    }
+
+    if copiedSquare.piece == square.piece {
+      t.Error(`No new piece created while copying square`);
+    }
+
+    if square.position != copiedSquare.position ||
+        square.isPlayable != copiedSquare.isPlayable {
+      t.Error(`Data not copied correctly during piece.Copy`);
+    }
+}
