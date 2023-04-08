@@ -36,6 +36,18 @@ func TestValue(t *testing.T) {
     }
 }
 
+func TestCopy(t *testing.T) {
+  piece := Piece{color: 'B', variant: 'K'}
+  copiedPiece := piece.Copy();
+  if &piece == &copiedPiece {
+    t.Error(`No new piece created while copying`);
+  }
+
+  if piece.variant != copiedPiece.variant || piece.color != copiedPiece.color {
+    t.Error(`Data not copied correctly during piece.Copy`);
+  }
+}
+
 func TestOurs(t *testing.T) {
     ourPiece := Piece{color: 'W', variant: 'P'}
     if ourPiece.Ours() != true {
